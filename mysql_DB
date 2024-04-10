@@ -1,0 +1,155 @@
+-- ## paste all code below into your mysql workbench select all and run 
+
+CREATE DATABASE school_result;
+USE school_result;
+CREATE TABLE student_scores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    roll_no VARCHAR(20) NOT NULL,
+    submission_date DATE NOT NULL,
+    physics INT NOT NULL,
+    chemistry INT NOT NULL,
+    biology INT NOT NULL,
+    math INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+USE school_result;
+ALTER TABLE student_scores ADD COLUMN mother_name VARCHAR(255) AFTER name;
+
+-- Create the data
+CREATE DATABASE IF NOT EXISTS payment_db;
+USE payment_db;
+
+-- Create the payment_details table
+CREATE TABLE payment_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    serial_no INT UNIQUE NOT NULL,
+    razorpay_payment_id VARCHAR(255),
+    razorpay_order_id VARCHAR(255),
+    razorpay_signature VARCHAR(255),
+    name VARCHAR(255),
+    email VARCHAR(255),
+    contact VARCHAR(255),
+    amount INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create the database_log table
+CREATE TABLE database_log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event VARCHAR(255) NOT NULL,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert a record for the database creation
+INSERT INTO database_log (event) VALUES ('Database created');
+
+
+CREATE DATABASE receive_payment;
+USE receive_payment;
+CREATE TABLE payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(255) NOT NULL,
+    roll_no VARCHAR(255) NOT NULL,
+    mother_name VARCHAR(255) NOT NULL,
+    order_id VARCHAR(255) NOT NULL,
+    payment_id VARCHAR(255) NOT NULL,
+    signature VARCHAR(255) NOT NULL,
+    amount INT NOT NULL
+);
+
+
+
+USE school_result;
+CREATE TABLE
+ payments_info (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(255) NOT NULL,
+    roll_no VARCHAR(255) NOT NULL,
+    mother_name VARCHAR(255) NOT NULL,
+    order_id VARCHAR(255) NOT NULL,
+    payment_id VARCHAR(255) NOT NULL,
+    signature VARCHAR(255) NOT NULL,
+    amount INT NOT NULL
+);
+
+=
+
+
+USE school_result;
+ALTER TABLE payments_info
+ADD COLUMN email VARCHAR(255),
+ADD COLUMN contact VARCHAR(20);
+
+USE school_result;
+CREATE TABLE admission_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(255) NOT NULL,
+    mother_name VARCHAR(255) NOT NULL,
+    mother_occupation VARCHAR(255) NOT NULL,
+    standard VARCHAR(10) NOT NULL,
+    address TEXT NOT NULL,
+    taluka VARCHAR(255) NOT NULL,
+    district VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE DATABASE restro_data;
+USE restro_data;
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id VARCHAR(255),
+    customer_name VARCHAR(255),
+    customer_email VARCHAR(255),
+    customer_contact VARCHAR(20),
+    payment_id VARCHAR(255),
+    razorpay_signature VARCHAR(255),
+    total_amount DECIMAL(10,2),
+    order_details TEXT
+);
+
+
+
+USE restro_data;
+ALTER TABLE orders
+ADD COLUMN created_at DATETIME DEFAULT CURRENT_TIMESTAMP;
+
+
+USE school_result;
+CREATE TABLE admission_info (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(255) NOT NULL,
+    mother_name VARCHAR(255) NOT NULL,
+    mother_occupation VARCHAR(255),
+    father_occupation VARCHAR(255),
+    standard VARCHAR(10) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    taluka VARCHAR(100) NOT NULL,
+    district VARCHAR(100) NOT NULL,
+    school VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    contact VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+USE school_result;
+ALTER TABLE admission_info
+ADD COLUMN order_id VARCHAR(255),
+ADD COLUMN payment_id VARCHAR(255),
+ADD COLUMN signature VARCHAR(255);
+
+
+USE school_result;
+ALTER TABLE admission_info
+ADD COLUMN amount VARCHAR(255);
+
+
+USE school_result;
+ALTER TABLE payments_info
+ADD COLUMN created_at DATETIME DEFAULT CURRENT_TIMESTAMP;
+
+USE school_result; 
+ALTER TABLE payments_info
+DROP COLUMN school_result;

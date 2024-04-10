@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Received Payments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Dark theme styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1f1f1f;
+            color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #2b2b2b;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 6px;
+            }
+        }
+
+        /* Additional styles */
+        table {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        th {
+            font-weight: bold;
+            border-right: 1px solid #4d4d4d;
+        }
+
+        td {
+            border-right: 1px solid #4d4d4d;
+        }
+
+        tr:hover {
+            background-color: #3b3b3b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Received Payments</h1>
+    <table>
+        <thead>
+            <tr>
+
+                <th>ID</th>
+                <th>Student Name</th>
+                <th>Roll No.</th>
+                <th>Mother's Name</th>
+                <th>Order ID</th>
+                <th>Payment ID</th>
+                <th>Signature</th>
+                <th>Amount</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Created at</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payment_data %}
+            <tr>
+                <td>{{ payment[0] }}</td>
+                <td>{{ payment[1] }}</td>
+                <td>{{ payment[2] }}</td>
+                <td>{{ payment[3] }}</td>
+                <td>{{ payment[4] }}</td>
+                <td>{{ payment[5] }}</td>
+                <td>{{ payment[6] }}</td>
+                <td>{{ payment[7] }}</td>
+                <td>{{ payment[8] }}</td>
+                <td>{{ payment[9] }}</td>
+                <td>{{ payment[10] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

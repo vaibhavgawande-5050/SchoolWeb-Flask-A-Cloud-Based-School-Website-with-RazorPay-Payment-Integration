@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Payment Page for fees</title>
+</head>
+
+<body>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            "key": "{{ live_key }}",
+            "amount": "{{ amount * 100 }}",  // Convert to paise
+            "currency": "INR",
+            "name": "Gawande Patil Public School",
+            "description": "Student Fee Payment",
+            "order_id": "{{ order_id }}",
+            "handler": function (response) {
+                var paymentData = {
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature,
+                 
+                };
+
+                // Send the payment data to the server
+                fetch('/payment_success_for_admission', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(paymentData)
+                })
+                    .then(response => {
+                        // Handle the server response
+                        console.log('Payment successful:', response);
+                        
+                          
+                          window.location.href = '/admission_payment_pass';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            },
+            "prefill": {
+                "name": "{{ student_name }}",
+                "email": "{{ email }}",
+                "contact": "{{ contact }}"
+            },
+            "notes": {
+                "address": ""
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        rzp1.on('payment.failed', function (response) {
+            window.location.href = '/admission_payment_fail';
+                    
+          
+            var failureData = {
+           
+            razorpay_payment_id: response.error.metadata.payment_id,
+            razorpay_order_id: response.error.metadata.order_id
+        };
+
+        // Send the failure data to the server
+        fetch('/payment_failed', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(failureData)
+        })
+            .then(response => {
+                // Handle the server response
+                console.log('Payment failed:', response);
+                var failureMessage = document.createElement("div");
+                failureMessage.textContent = "Payment Failed! Please try again.";
+                failureMessage.style.fontSize = "24px";
+                failureMessage.style.fontWeight = "bold";
+                failureMessage.style.color = "red";
+                failureMessage.style.marginTop = "20px";
+                document.body.appendChild(failureMessage);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+      
+    </script>
+</body>
+
+</html>

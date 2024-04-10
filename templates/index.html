@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gawande Patil Public School</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        /* Dark Mode Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1c1c1c;
+            color: #f4f4f4;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #34495e;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header-left,
+        .header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .admin-link,
+        .contact-link,
+        .about-link {
+            color: #f4f4f4;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .admin-link {
+            background-color: #c0392b;
+        }
+
+        .admin-link:hover {
+            background-color: #e74c3c;
+        }
+
+        .contact-link,
+        .about-link {
+            background-color: #27ae60;
+        }
+
+        .contact-link:hover,
+        .about-link:hover {
+            background-color: #2ecc71;
+        }
+
+        .header-content {
+            margin-top: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .slogan {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        /* Main Content Styles */
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            padding: 20px;
+        }
+
+        .option-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #27ae60;
+            color: #f4f4f4;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            width: 200px;
+            text-align: center;
+        }
+
+        .option:hover {
+            background-color: #2ecc71;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #34495e;
+            color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-links a {
+            color: #f4f4f4;
+            text-decoration: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #27ae60;
+            transition: background-color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            background-color: #2ecc71;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .option-container {
+                margin: 20px;
+            }
+
+            .option {
+                width: 100%;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <div class="header-left">
+                <a href="{{ url_for('admin_login') }}" class="admin-link">Admin</a>
+            </div>
+            <div class="header-right">
+                <a href="{{ url_for('contact_page') }}" class="contact-link">Contact</a>
+                <a href="{{ url_for('about_page') }}" class="about-link">About</a>
+            </div>
+        </div>
+        <div class="header-content">
+            <h1>Gawande Patil Public School</h1>
+            <p class="slogan">"Nurturing Minds, Building Futures"</p>
+        </div>
+    </header>
+    <main>
+        <div class="option-container">
+            <a href="{{ url_for('admission_page') }}" class="option">Admission</a>
+            <a href="{{ url_for('student_page') }}" class="option">Student</a>
+            <a href="{{ url_for('teacher_login') }}" class="option">Teacher</a>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Gawande Patil Public School. All rights reserved.</p>
+            
+        </div>
+    </footer>
+</body>
+</html>

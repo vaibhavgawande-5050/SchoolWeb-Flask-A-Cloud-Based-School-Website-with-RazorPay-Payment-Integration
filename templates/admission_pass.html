@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #f2f2f2;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #333333;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 30px;
+        }
+
+        .payment-details {
+            margin-bottom: 20px;
+        }
+
+        .payment-details p {
+            margin: 5px 0;
+        }
+
+        .note {
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+            color: hsl(50, 100%, 50%);
+        }
+
+        .note p {
+            margin: 0;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .home-button,
+        .contact-button,
+        .about-button {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: #1a1a1a;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button:hover,
+        .contact-button:hover,
+        .about-button:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .home-button,
+            .contact-button,
+            .about-button {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Successful</h1>
+        <div class="payment-details">
+            <p>Name: {{ name }}</p>
+            <p>Mother's Name: {{ mother_name }}</p>
+            <p>Standard: {{ standard }}</p>
+            <p>Order ID: {{ order_id }}</p>
+            <p>Payment ID: {{ payment_id }}</p>
+            <p>Amount: ₹{{ amount }}</p>
+        </div>
+        <div class="note">
+            <p>This bill is proof of the payment you made. Please take a photo or screenshot of this page for your records.</p>
+        </div>
+        <div class="buttons">
+            <a href="{{ url_for('home') }}" class="home-button">Home</a>
+            <a href="{{ url_for('contact_page') }}" class="contact-button">Contact</a>
+            <a href="{{ url_for('about_page') }}" class="about-button">About</a>
+        </div>
+    </div>
+</body>
+</html>
