@@ -15,14 +15,14 @@ app = Flask(__name__)
 # MySQL configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = '911262'
+app.config['MYSQL_PASSWORD'] = 'password'
 app.config['MYSQL_DB'] = 'school_result'
 
 mysql = MySQL(app)
 client = razorpay.Client(auth=(test_key, test_secret))
 
 # Configure session secret key
-app.secret_key = secrets.token_hex(32)
+app.secret_key = secrets.token_hex(16)
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
@@ -97,7 +97,7 @@ def payment():
         print("process payment function")
         return render_template('payment.html', order_id=order_id, student_name=student_name, email=email, contact=contact, roll_no=roll_no, mother_name=mother_name, amount=amount,test_key=test_key)
 
-app.secret_key = secrets.token_hex(32)  # Generate a secret key for session encryption
+app.secret_key = secrets.token_hex(16)  # Generate a secret key for session encryption
 
 # Configure the session to use server-side storage
 app.config['SESSION_TYPE'] = 'filesystem'
