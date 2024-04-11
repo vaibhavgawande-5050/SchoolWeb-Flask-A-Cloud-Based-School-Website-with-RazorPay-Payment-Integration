@@ -7,7 +7,7 @@ from config import *
 import uuid
 import razorpay.utility
 
-
+#update
 
 app = Flask(__name__)
 
@@ -72,17 +72,17 @@ def delete_admission_redirect():
 
 @app.route('/payment', methods=['GET', 'POST'])
 def payment():
-    global student_name1,mother_name1,roll_no1,amount
+    print("in payment func")
     if request.method == 'POST':
-        student_name1 = request.form['student_name']
+        student_name = request.form['student_name']
         email = request.form['email']
         contact = request.form['contact']
-        mother_name1= request.form['mother_name']
-        roll_no1 = request.form['roll_number']
+        mother_name= request.form['mother_name']
+        roll_no = request.form['roll_number']
         amount= int(request.form['amount'])  # Get the amount from the form
         print(email,contact)
         # Generate order data with a unique order ID and receipt
-        order_id = str(uuid.uuid4())  # Generate a unique order ID
+        # order_id = str(uuid.uuid4())  # Generate a unique order ID
         receipt = str(uuid.uuid4())  # Generate a unique receipt
         data = {
             "amount": amount * 100,  # Convert to paise
@@ -91,11 +91,11 @@ def payment():
             "partial_payment": False
         }
         payment = client.order.create(data=data)
-
+        print("razorpay_call in payment functio done")  
         # Render the payment template with the order details
         order_id = payment['id']
         print("process payment function")
-        return render_template('payment.html', order_id=order_id, student_name=student_name1, email=email, contact=contact, roll_no=roll_no1, mother_name=mother_name1, amount=amount,test_key=test_key)
+        return render_template('payment.html', order_id=order_id, student_name=student_name, email=email, contact=contact, roll_no=roll_no, mother_name=mother_name, amount=amount,test_key=test_key)
 
 app.secret_key = secrets.token_hex(32)  # Generate a secret key for session encryption
 
@@ -395,8 +395,8 @@ def calculate_rank(total_score):
 
 @app.route('/payment_success', methods=['POST'])
 def payment_success():
-    global Order_ID,Payment_ID
-    # Get the payment data from Razorpay
+  
+    print("inside payment pass function") 
     payment_data = request.get_json()
 
     # Check if the required keys are present in the payment data
@@ -418,8 +418,6 @@ def payment_success():
     amount = int(payment_data['amount'])
     email = payment_data['email']
     contact = payment_data['contact']
-    Order_ID=order_id
-    Payment_ID=payment_id
     # Store the payment data in the MySQL database
     cur = mysql.connection.cursor()
     sql = "INSERT INTO payments_info (student_name, roll_no, mother_name, order_id, payment_id, signature, amount, email, contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -450,31 +448,31 @@ def receive_payment():
 def admission_page():
       
       return render_template('admission.html')
- 
+
 @app.route('/admission', methods=['GET', 'POST'])
 def admission():
     
-    global ad_student_name,ad_mother_name,ad_mother_occupation,ad_father_occupation,ad_standard,ad_address,ad_taluka,ad_district,ad_school,ad_email,ad_contact,admission_fees
+    global student_name_value,mother_name_value,mother_occupation,father_occupation,standard,address,taluka,district,school,email_value,contact_value,admission_fees
     print("stage 1")
     if request.method == 'POST':
         print("2 stage")
         # Retrieve form data
-        ad_student_name = request.form['student_name']
-        ad_mother_name = request.form['mother_name']
-        ad_mother_occupation = request.form['mother_occupation']
-        ad_father_occupation = request.form['father_occupation']
-        ad_standard = request.form['standard']
-        ad_address = request.form['address']
-        ad_taluka = request.form['taluka']
-        ad_district = request.form['district']
-        ad_school=request.form['school']
-        ad_email=request.form['email']
-        ad_contact=request.form['contact']
+        student_name_value = request.form['student_name']
+        mother_name_value = request.form['mother_name']
+        mother_occupation = request.form['mother_occupation']
+        father_occupation = request.form['father_occupation']
+        standard = request.form['standard']
+        address = request.form['address']
+        taluka = request.form['taluka']
+        district = request.form['district']
+        school=request.form['school']
+        email_value=request.form['email']
+        contact_value=request.form['contact']
 
         if 'pay_fees' in request.form:
             print("stage 4")
             # Generate order data for admission fee payment (₹10)
-            order_id = str(uuid.uuid4())
+            # order_id = str(uuid.uuid4())
             receipt = str(uuid.uuid4())
             amount=int(500*100)  # change value here to change admission fees amount in paisa
             admission_fees=amount
@@ -492,7 +490,7 @@ def admission():
     
     return render_template('admission.html')
 
-
+   
 @app.route('/admission_list')
 def admission_list():
     # Connect to the MySQL database
@@ -512,21 +510,14 @@ def admission_list():
 @app.route('/payment_success_for_admission', methods=['POST'])
 def payment_success_for_admission():
  
-    global ad_order_id,ad_payment_id
-    # Get the payment data from Razorpay
     payment_data = request.get_json()
+
+
     print("enter to payment_success_for admission")
-    student_name=ad_student_name
-    mother_name=ad_mother_name
-    mother_occupation=ad_mother_occupation
-    father_occupation=ad_father_occupation
-    standard=ad_standard
-    address=ad_address
-    taluka=ad_taluka
-    district=ad_district
-    school=ad_school
-    email=ad_email
-    contact=ad_contact
+    student_name=student_name_value
+    mother_name=mother_name_value
+    email=email_value
+    contact=contact_value
     
 
 
@@ -534,8 +525,6 @@ def payment_success_for_admission():
     order_id = payment_data['razorpay_order_id']
     payment_id = payment_data['razorpay_payment_id']
     signature = payment_data['razorpay_signature']
-    ad_order_id=order_id
-    ad_payment_id=payment_id
     amount=(admission_fees/100)
 
     cur = mysql.connection.cursor()
@@ -549,10 +538,35 @@ def payment_success_for_admission():
     print("Payment successful  in admission_info:", payment_data)
     return "Payment successful."
 
+# @app.route("/payment_pass")
+# def payment_pass():
+
+#     return render_template("payment_pass.html",student_name=student_name1,mother_name=mother_name1,roll_no=roll_no1,amount=amount,order_id=Order_ID,payment_id=Payment_ID)
+
 @app.route("/payment_pass")
 def payment_pass():
+    # Get the order_id and payment_id from the request (e.g., query parameters)
+    order_id = request.args.get('order_id')
+    payment_id = request.args.get('payment_id')
+  
+    print(order_id,"in payment_pass function")
+    # Connect to the MySQL database
+    cur = mysql.connection.cursor()
 
-    return render_template("payment_pass.html",student_name=student_name1,mother_name=mother_name1,roll_no=roll_no1,amount=amount,order_id=Order_ID,payment_id=Payment_ID)
+    # Retrieve the payment data from the database using the order_id and payment_id
+    query = "SELECT student_name, mother_name, roll_no, amount FROM payments_info WHERE order_id = %s AND payment_id = %s"
+    cur.execute(query, (order_id, payment_id))
+    payment_data = cur.fetchone()
+
+    # Close the cursor
+    cur.close()
+
+    if payment_data:
+        student_name, mother_name, roll_no, amount = payment_data
+        return render_template("payment_pass.html", student_name=student_name, mother_name=mother_name, roll_no=roll_no, amount=amount, order_id=order_id, payment_id=payment_id)
+    else:
+        # Handle the case when no payment data is found for the given order_id and payment_id
+        return "No payment data found for the given order and payment."
 
 
 @app.route("/payment_fail")
@@ -560,11 +574,33 @@ def payment_fail():
 
     return render_template("payment_fail.html")
 
-@app.route('/admission_payment_pass')
-def admission_payment_pass():
-    amount=(admission_fees/100)
 
-    return render_template("admission_pass.html",name=ad_student_name,mother_name=ad_mother_name,standard=ad_standard,order_id=ad_order_id,payment_id=ad_payment_id,amount=amount)
+
+@app.route('/admission_payment_pass', methods=['GET'])
+def admission_payment_pass():
+    # Get the order_id and payment_id from the query parameters
+    order_id = request.args.get('order_id')
+    payment_id = request.args.get('payment_id')
+     
+    print(order_id)
+    print(payment_id)
+    # Connect to the MySQL database
+    cur = mysql.connection.cursor()
+
+    # Retrieve the admission data from the database using the order_id and payment_id
+    query = "SELECT student_name, mother_name, standard, amount FROM admission_info WHERE order_id = %s AND payment_id = %s"
+    cur.execute(query, (order_id, payment_id))
+    admission_data = cur.fetchone()
+
+    # Close the cursor
+    cur.close()
+
+    if admission_data:
+        student_name, mother_name, standard, amount = admission_data
+        return render_template("admission_pass.html", name=student_name, mother_name=mother_name, standard=standard, order_id=order_id, payment_id=payment_id, amount=amount)
+    else:
+        # Handle the case when no admission data is found for the given order_id and payment_id
+        return "No admission data found for the given order and payment."
 
 @app.route("/admission_payment_fail")
 def admission_payment_fail():

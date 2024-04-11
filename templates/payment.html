@@ -10,7 +10,7 @@
     <script>
         var options = {
             "key": "{{ test_key }}",
-            "amount": "{{ amount * 100 }}",  // Convert to paise
+            "amount": "{{ amount * 100 }}", // Convert to paise
             "currency": "INR",
             "name": "Gawande Patil Public School",
             "description": "Student Fee Payment",
@@ -20,9 +20,9 @@
                     razorpay_payment_id: response.razorpay_payment_id,
                     razorpay_order_id: response.razorpay_order_id,
                     razorpay_signature: response.razorpay_signature,
-                    student_name: "{{ student_name }}",  // Pass the student name from Jinja2
-                    roll_no: "{{ roll_no }}",  // Pass the roll number from Jinja2
-                    mother_name: "{{ mother_name }}",  // Pass the mother's name from Jinja2
+                    student_name: "{{ student_name }}", // Pass the student name from Jinja2
+                    roll_no: "{{ roll_no }}", // Pass the roll number from Jinja2
+                    mother_name: "{{ mother_name }}", // Pass the mother's name from Jinja2
                     amount: "{{ amount }}", // Pass the amount from Jinja2
                     email: "{{ email }}",
                     contact: "{{ contact }}",
@@ -39,9 +39,7 @@
                     .then(response => {
                         // Handle the server response
                         console.log('Payment successful:', response);
-                        
-                          
-                          window.location.href = '/payment_pass';
+                        window.location.href = '/payment_pass?order_id=' + paymentData.razorpay_order_id + '&payment_id=' + paymentData.razorpay_payment_id;
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -63,38 +61,34 @@
         rzp1.open();
         rzp1.on('payment.failed', function (response) {
             window.location.href = '/payment_fail';
-                    
-          
             var failureData = {
-           
-            razorpay_payment_id: response.error.metadata.payment_id,
-            razorpay_order_id: response.error.metadata.order_id
-        };
+                razorpay_payment_id: response.error.metadata.payment_id,
+                razorpay_order_id: response.error.metadata.order_id
+            };
 
-        // Send the failure data to the server
-        fetch('/payment_failed', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(failureData)
-        })
-            .then(response => {
-                // Handle the server response
-                console.log('Payment failed:', response);
-                var failureMessage = document.createElement("div");
-                failureMessage.textContent = "Payment Failed! Please try again.";
-                failureMessage.style.fontSize = "24px";
-                failureMessage.style.fontWeight = "bold";
-                failureMessage.style.color = "red";
-                failureMessage.style.marginTop = "20px";
-                document.body.appendChild(failureMessage);
+            // Send the failure data to the server
+            fetch('/payment_failed', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(failureData)
             })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => {
+                    // Handle the server response
+                    console.log('Payment failed:', response);
+                    var failureMessage = document.createElement("div");
+                    failureMessage.textContent = "Payment Failed! Please try again.";
+                    failureMessage.style.fontSize = "24px";
+                    failureMessage.style.fontWeight = "bold";
+                    failureMessage.style.color = "red";
+                    failureMessage.style.marginTop = "20px";
+                    document.body.appendChild(failureMessage);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
-      
     </script>
 </body>
 
