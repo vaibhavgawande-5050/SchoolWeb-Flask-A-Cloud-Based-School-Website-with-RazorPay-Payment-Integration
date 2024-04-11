@@ -74,7 +74,7 @@ CREATE TABLE
     amount INT NOT NULL
 );
 
-=
+
 
 
 USE school_result;

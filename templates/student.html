@@ -9,105 +9,138 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-  <style>
+<style>
     /* Global Styles */
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #1c1c1c;
-  color: #f1f1f1;
-}
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1c1c1c;
+        color: #f1f1f1;
+    }
 
-/* Header Styles */
-header {
-  background-color: #333;
-  padding: 20px 0;
-}
+    /* Header Styles */
+    header {
+        background-color: #333;
+        padding: 20px 0;
+    }
 
-.header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 
-.header-left a,
-.header-right a {
-  color: #f1f1f1;
-  text-decoration: none;
-  margin-right: 20px;
-}
+    .header-left a,
+    .header-right a {
+        color: #f1f1f1;
+        text-decoration: none;
+        margin-right: 20px;
+    }
 
-.header-left a:hover,
-.header-right a:hover {
-  color: #e0e0e0;
-}
+    .header-left a:hover,
+    .header-right a:hover {
+        color: #e0e0e0;
+    }
 
-.header-content h1 {
-  margin: 0;
-  font-size: 36px;
-}
+    .header-content h1 {
+        margin: 0;
+        font-size: 36px;
+    }
 
-.slogan {
-  font-size: 18px;
-  color: #b3b3b3;
-}
+    .slogan {
+        font-size: 18px;
+        color: #b3b3b3;
+    }
 
-/* Main Content Styles */
-main {
-  padding: 40px 0;
-}
+    /* Main Content Styles */
+    main {
+        padding: 40px 0;
+    }
 
-.student-container {
-  background-color: #333;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+    .student-container {
+        background-color: #333;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-.student-container h2 {
-  margin-top: 0;
-}
+    .student-container h2 {
+        margin-top: 0;
+    }
 
-.student-options a {
-  display: block;
-  background-color: #444;
-  color: #f1f1f1;
-  text-decoration: none;
-  padding: 12px 20px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
+    .student-options a {
+        display: block;
+        background-color: #4CAF50; /* Green color */
+        color: #f1f1f1;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        transition: background-color 0.3s ease;
+    }
 
-.student-options a:hover {
-  background-color: #555;
-}
+    .student-options a:hover {
+        background-color: #3e8e41;
+    }
 
-/* Footer Styles */
-footer {
-  background-color: #333;
-  color: #b3b3b3;
-  padding: 20px 0;
-  text-align: center;
-}
+    /* Footer Styles */
+    footer {
+        background-color: #333;
+        color: #b3b3b3;
+        padding: 20px 0;
+        text-align: center;
+    }
 
-.footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.footer-links a {
-  color: #b3b3b3;
-  text-decoration: none;
-  margin-left: 20px;
-}
+    .footer-links a {
+        color: #b3b3b3;
+        text-decoration: none;
+        margin-left: 20px;
+    }
 
-.footer-links a:hover {
-  color: #e0e0e0;
-}
-  </style>
+    .footer-links a:hover {
+        color: #e0e0e0;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .header-top {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .header-right {
+            margin-top: 10px;
+        }
+
+        .header-left a,
+        .header-right a {
+            margin-right: 0;
+            margin-bottom: 10px;
+        }
+
+        .footer-content {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-links {
+            margin-top: 10px;
+        }
+
+        .footer-links a {
+            margin-left: 0;
+            margin-right: 20px;
+        }
+    }
+</style>
 <body>
     <header>
         <div class="header-top">
@@ -129,8 +162,7 @@ footer {
             <h2>Student Portal</h2>
             <div class="student-options">
                 <a href="{{ url_for('pay_fees') }}" class="option">Pay School Fees</a>
-                <!-- <a href="{{ url_for('check_result') }}" class="option">View Results</a> -->
-                <a href="{{ url_for('check_result') }}">View Results</a>
+                <a href="{{ url_for('check_result') }}" class="option">View Results</a>
             </div>
         </div>
     </main>

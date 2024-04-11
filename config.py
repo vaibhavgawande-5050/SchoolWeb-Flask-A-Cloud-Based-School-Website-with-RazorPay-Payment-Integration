@@ -1,10 +1,8 @@
-# config.py
-RECAPTCHA_PUBLIC_KEY = 'public_key'
-RECAPTCHA_PRIVATE_KEY = 'private_key'
-
-razorpay_key='live_key'
-razorpay_secret='live_key'
+RECAPTCHA_PUBLIC_KEY = 'key'
+RECAPTCHA_PRIVATE_KEY = 'secret'
 
 
-test_key="test_key"
-test_secret="test_key"
+
+
+test_key="rzp_test_LFnpHYpUR9cUXG"
+test_secret="pLjtSxNrz4hZqu1IpdXPqLdy"

@@ -22,7 +22,7 @@ mysql = MySQL(app)
 client = razorpay.Client(auth=(test_key, test_secret))
 
 # Configure session secret key
-app.secret_key = secrets.token_hex(16)
+app.secret_key = secrets.token_hex(32)
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
@@ -95,9 +95,9 @@ def payment():
         # Render the payment template with the order details
         order_id = payment['id']
         print("process payment function")
-        return render_template('payment.html', order_id=order_id, student_name=student_name1, email=email, contact=contact, roll_no=roll_no1, mother_name=mother_name1, amount=amount)
+        return render_template('payment.html', order_id=order_id, student_name=student_name1, email=email, contact=contact, roll_no=roll_no1, mother_name=mother_name1, amount=amount,test_key=test_key)
 
-app.secret_key = secrets.token_hex(16)  # Generate a secret key for session encryption
+app.secret_key = secrets.token_hex(32)  # Generate a secret key for session encryption
 
 # Configure the session to use server-side storage
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -247,7 +247,6 @@ def submit_scores():
         name = request.form['name'].strip()
         mother_name = request.form['motherName'].strip()
         roll_no = request.form['rollNo'].strip()
-        submission_date = request.form['submissionDate']
         physics = request.form['physics']
         chemistry = request.form['chemistry']
         biology = request.form['biology']
@@ -257,8 +256,8 @@ def submit_scores():
         cur = mysql.connection.cursor()
 
         # Insert data into the student_scores table
-        query = "INSERT INTO student_scores (name, mother_name, roll_no, submission_date, physics, chemistry, biology, math) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        values = (name, mother_name, roll_no, submission_date, physics, chemistry, biology, math)
+        query = "INSERT INTO student_scores (name, mother_name, roll_no, physics, chemistry, biology, math) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        values = (name, mother_name, roll_no, physics, chemistry, biology, math)
         cur.execute(query, values)
 
         # Commit the changes and close the connection
@@ -295,9 +294,12 @@ def delete_record():
 
     return render_template('delete_record.html')
 
+
+
+
 @app.route('/view-scores', methods=['GET'])
 def view_scores():
-    # Connect to the MySQL database
+  # Connect to the MySQL database
     cur = mysql.connection.cursor()
 
     # Execute a SELECT query to fetch all data from the student_scores table
@@ -313,67 +315,58 @@ def view_scores():
     # Calculate total score, percentage, and rank for each student
     student_data = []
     for row in rows:
-        id, name, mother_name, roll_no, submission_date, physics, chemistry, biology, math, created_at = row
+        id, name, mother_name, roll_no, physics, chemistry, biology, math, created_at = row
         total_score = physics + chemistry + biology + math
         percentage = (total_score / 400) * 100
-        student_data.append((id, name, mother_name, roll_no, submission_date, physics, chemistry, biology, math, total_score, percentage, created_at))
+        student_data.append((id, name, mother_name, roll_no, physics, chemistry, biology, math, total_score, percentage, created_at))
 
     # Sort the student data by total score in descending order
-    student_data.sort(key=lambda x: x[9], reverse=True)
+    student_data.sort(key=lambda x: (-x[9], x[0]))  # Sort by total score in descending order, then by id in ascending order
 
     # Assign ranks to students
     rank = 1
-    ranked_student_data = []
     prev_score = None
+    ranked_student_data = []
     for data in student_data:
         if prev_score != data[9]:
             prev_score = data[9]
-            rank = len(ranked_student_data) + 1
+            rank = ranked_student_data[-1][11] + 1 if ranked_student_data else 1
         ranked_student_data.append(data + (rank,))
 
     # Render the HTML template and pass the ranked student data
     return render_template('view_scores.html', students=ranked_student_data)
-
-
+    
 @app.route('/check-rank', methods=['GET', 'POST'])
 def check_rank():
     if request.method == 'POST':
         roll_number = request.form['roll_no'].strip()
         mother_name = request.form['mother_name'].strip()
-
         # Connect to the MySQL database
         cur = mysql.connection.cursor()
-
         # Query to retrieve student data
-        query = "SELECT * FROM student_scores WHERE roll_no = %s AND mother_name = %s"
+        query = "SELECT id, name, mother_name, roll_no, physics, chemistry, biology, math, created_at FROM student_scores WHERE roll_no = %s AND mother_name = %s"
         cur.execute(query, (roll_number, mother_name))
         student = cur.fetchone()
-
         if student:
             # Unpack student data
-            id, name, mother_name, roll_no, submission_date, physics, chemistry, biology, math, created_at = student
-
+            id, name, mother_name, roll_no, physics, chemistry, biology, math, created_at = student
             # Calculate the total score and percentage
             total_score = physics + chemistry + biology + math
             percentage = (total_score / 400) * 100
-
             # Calculate the rank
             rank = calculate_rank(total_score)
-
             # Check if the student passed or failed
             passed = percentage >= 40
-
             # Render the success or failure template
             if passed:
                 return render_template('success.html', name=name, roll_no=roll_no, score=percentage, rank=rank, physics=physics, chemistry=chemistry, biology=biology, math=math)
             else:
-                return render_template('failure.html', name=name, roll_no=roll_no, score=percentage,rank=rank,physics=physics,chemistry=chemistry,biology=biology,math=math)
+                return render_template('failure.html', name=name, roll_no=roll_no, score=percentage, rank=rank, physics=physics, chemistry=chemistry, biology=biology, math=math)
         else:
             cur.close()
-            return r'Invalid roll number or mother\'s name.'
-
+            return "Invalid roll number or mother's name."
     # return render_template('check_result.html')
-    return " what is missing"
+    return "What is missing?"
 
 def calculate_rank(total_score):
     # Connect to the MySQL database
@@ -461,9 +454,6 @@ def admission_page():
 @app.route('/admission', methods=['GET', 'POST'])
 def admission():
     
-    client = razorpay.Client(auth=(razorpay_key, razorpay_secret))
-
-
     global ad_student_name,ad_mother_name,ad_mother_occupation,ad_father_occupation,ad_standard,ad_address,ad_taluka,ad_district,ad_school,ad_email,ad_contact,admission_fees
     print("stage 1")
     if request.method == 'POST':
@@ -486,10 +476,10 @@ def admission():
             # Generate order data for admission fee payment (₹10)
             order_id = str(uuid.uuid4())
             receipt = str(uuid.uuid4())
-            amount=int(10*100)  # change value here to change admission fees amount in paisa
+            amount=int(500*100)  # change value here to change admission fees amount in paisa
             admission_fees=amount
             data = {
-                "amount": 1000,  # ₹1000 in paise
+                "amount": amount,  # ₹ in paise
                 "currency": "INR",
                 "receipt": receipt,
                 "partial_payment": False
@@ -498,7 +488,7 @@ def admission():
 
             # Render the payment template with the order details
             order_id = payment['id']
-            return render_template('admission_payment.html', order_id=order_id, amount=amount,live_key=razorpay_key)
+            return render_template('admission_payment.html', order_id=order_id, amount=amount,test_key=test_key)
     
     return render_template('admission.html')
 
@@ -582,4 +572,6 @@ def admission_payment_fail():
     return render_template("admission_payment_fail.html")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False,host='0.0.0.0', port='5000')
+
+    

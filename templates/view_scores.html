@@ -12,72 +12,58 @@
             margin: 0;
             padding: 0;
         }
-
         h1 {
             text-align: center;
             padding: 20px 0;
         }
-
         table {
             border-collapse: collapse;
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
         }
-
         th, td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
-
         th {
             background-color: #333;
         }
-
         tr:nth-child(even) {
             background-color: #2b2b2b;
         }
-
         /* Responsive styles */
         @media (max-width: 768px) {
             table {
                 font-size: 14px;
             }
-
             th, td {
                 padding: 8px;
             }
         }
-
         @media (max-width: 480px) {
             table {
                 font-size: 12px;
             }
-
             th, td {
                 padding: 6px;
             }
         }
-
         /* Additional styles */
         table {
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
-
         th {
             font-weight: bold;
             border-right: 1px solid #4d4d4d;
         }
-
         td {
             border-right: 1px solid #4d4d4d;
         }
-
         tr:hover {
             background-color: #3b3b3b;
         }
-
         .rank-badge {
             display: inline-block;
             background-color: #4CAF50;
@@ -99,7 +85,6 @@
                 <th>Name</th>
                 <th>Mother's Name</th>
                 <th>Roll No</th>
-                <th>Submission Date</th>
                 <th>Physics</th>
                 <th>Chemistry</th>
                 <th>Biology</th>
@@ -112,7 +97,7 @@
         <tbody>
             {% for student in students %}
             <tr>
-                <td><span class="rank-badge">{{ student[12] }}</span></td>
+                <td><span class="rank-badge">{{ student[11] }}</span></td>
                 <td>{{ student[0] }}</td>
                 <td>{{ student[1] }}</td>
                 <td>{{ student[2] }}</td>
@@ -124,7 +109,6 @@
                 <td>{{ student[8] }}</td>
                 <td>{{ student[9] }}</td>
                 <td>{{ student[10] }}</td>
-                <td>{{ student[11] }}</td>
             </tr>
             {% endfor %}
         </tbody>
